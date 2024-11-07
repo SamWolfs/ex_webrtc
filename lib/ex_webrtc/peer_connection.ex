@@ -1155,7 +1155,7 @@ defmodule ExWebRTC.PeerConnection do
   def handle_cast({:send_data, channel_ref, data}, state) do
     # TODO: allow for configuring the type of data
     {events, sctp_transport} =
-      SCTPTransport.send(state.sctp_transport, channel_ref, :string, data)
+      SCTPTransport.send(state.sctp_transport, channel_ref, :binary, data)
 
     handle_sctp_events(events, state)
 
