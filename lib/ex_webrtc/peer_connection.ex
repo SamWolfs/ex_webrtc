@@ -1998,6 +1998,7 @@ defmodule ExWebRTC.PeerConnection do
   defp tr_negotiation_needed?([tr | _transceivers], _state) when tr.mid == nil, do: true
 
   defp tr_negotiation_needed?([tr | transceivers], state) do
+    IO.inspect(state.current_local_desc)
     {local_desc_type, local_desc} = state.current_local_desc
     {_, remote_desc} = state.current_remote_desc
 
