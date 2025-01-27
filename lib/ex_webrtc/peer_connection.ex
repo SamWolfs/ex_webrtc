@@ -176,9 +176,9 @@ defmodule ExWebRTC.PeerConnection do
 
   If `ref` does not identify any DataChannel, this function behaves like no-op.
   """
-  @spec send_data(peer_connection(), DataChannel.ref(), binary()) :: :ok
-  def send_data(peer_connection, channel_ref, data) do
-    GenServer.cast(peer_connection, {:send_data, channel_ref, data})
+  @spec send_data(peer_connection(), DataChannel.ref(), binary(), :string | :binary) :: :ok
+  def send_data(peer_connection, channel_ref, data, type \\ :string) do
+    GenServer.cast(peer_connection, {:send_data, channel_ref, data, type})
   end
 
   #### MDN-API ####
@@ -1152,10 +1152,10 @@ defmodule ExWebRTC.PeerConnection do
   end
 
   @impl true
-  def handle_cast({:send_data, channel_ref, data}, state) do
+  def handle_cast({:send_data, channel_ref, data, type}, state) do
     # TODO: allow for configuring the type of data
     {events, sctp_transport} =
-      SCTPTransport.send(state.sctp_transport, channel_ref, :binary, data)
+      SCTPTransport.send(state.sctp_transport, channel_ref, type, data)
 
     handle_sctp_events(events, state)
 
